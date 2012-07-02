@@ -8,6 +8,7 @@ Move/Upload all of the files (oneportal.api.php  oneportal.php  README  usageupd
 ## Setup
 
 For every hosting product/service while you set them up:
+
 1.  Go to the "Module Settings" tab
 2.  Select "Oneportal" as the "Module Name"
 3.  Input your "API Key" from OnePortal's "Administrative" -> "API"
@@ -16,6 +17,7 @@ For every hosting product/service while you set them up:
 6.  Leave the option as "Do not automatically setup this product"
 
 Then, go to the "Custom Fields" and add a field with the following:
+
 - Field Name: Server ID
 - Field Type: Server ID
 - (optionally) Description: Unique Server ID within the data center
@@ -23,6 +25,7 @@ Then, go to the "Custom Fields" and add a field with the following:
 - (optionally) Click "Show on invoice" if you want the Server ID on your clients' invoices
 
 Then, when you provision a new server for a client:
+
 1.  Modify the product through the client's "Products/Services" tab
 2.  Locate the "Server ID" field and put in the server's ID as either "D####" or "LSN-D####" where the # signs are the ID of your server in OnePortal
 3.  Click "Save Changes"
