@@ -39,4 +39,4 @@ To update bandwidth usage, you should setup a cron job for the following:
 
 	php -q /full_path_to/whmcs/modules/servers/oneportal/usageupdate.cron.php
 
-We recommend every 5 minutes
+We recommend every 5 minutes. If you use this feature, be sure to put your API key on line 4 of usageupdate.cron.php where you see "$oneportal_api_key ="
