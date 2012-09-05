@@ -1,5 +1,7 @@
 # WHMCS addon for OnePortal
 
+This WHMCS addon is provided without support. Limestone Networks' support department does not provide any assistance with the installation or use of this addon.
+
 ## Installation
 
 Move/Upload all of the files (oneportal.api.php  oneportal.php  README  usageupdate.cron.php) to modules/servers/oneportal
