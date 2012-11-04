@@ -21,7 +21,7 @@ For every hosting product/service while you set them up:
 Then, go to the "Custom Fields" and add a field with the following:
 
 - Field Name: Server ID
-- Field Type: Server ID
+- Field Type: Text Box
 - (optionally) Description: Unique Server ID within the data center
 - (optionally) Click "Admin Only" if you don't want to show this information to the client
 - (optionally) Click "Show on invoice" if you want the Server ID on your clients' invoices
