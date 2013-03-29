@@ -1,7 +1,7 @@
 <?php
 
 // Path to configuration.php
-$oneportal_api_key = 'fpj4abbvoxhagw84atmkpfr9ebllrs6iye3n926extkoydtauc4yn1r504npy0tx';
+$oneportal_api_key = '=========== ONE PORTAL API KEY GOES HERE ===========';
 
 require(dirname(__FILE__) . DIRECTORY_SEPARATOR . '../../../configuration.php');
 require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'oneportal.api.php');
