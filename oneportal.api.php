@@ -120,7 +120,7 @@ class OnePortal {
 		if (isset($server) && $server !== FALSE) $filter['server'] = $server;
 		if (isset($admin_user) && $admin_user !== FALSE) $filter['admin_user'] = $admin_user;
 		if (isset($admin_pass) && $admin_pass !== FALSE) $filter['admin_pass'] = $admin_pass;
-		return $this->APIQuery('billing', 'pay', 'POST', $filter);
+		return $this->APIQuery('support', 'addticket', 'POST', $filter);
 	}
 
 	public function listtickets($status = 'open') {
