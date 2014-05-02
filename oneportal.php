@@ -11,7 +11,7 @@ function oneportal_ConfigOptions() {
 			'Size' => '60'
 		),
 	 	'url' => array(
-			'FriendlyName' => 'Root User (optional)',
+			'FriendlyName' => 'OnePortal API URL',
 			'Type' => 'text',
 			'Size' => '60',
 			'Default' => 'https://one.limestonenetworks.com/webservices/clientapi.php'
