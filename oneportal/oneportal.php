@@ -374,9 +374,7 @@ function oneportal_ipaddresses($params) {
 	$server_id = $params['customfields']['Server ID'];
 	if (empty($server_id)) return 'Unable to determine Server ID to suspend';
 	if (substr(strtoupper($server_id), 0, 3) != 'LSN') $server_id = 'LSN-' . $server_id;
-
 	$ips = $op->ipaddresses(false, $server_id, false);
-
 	$ip_array = array();
 	foreach ($ips->ipaddress as $ip) {
 		$ip_array[(string)$ip->network][(string)$ip->attributes()->ip] = array(

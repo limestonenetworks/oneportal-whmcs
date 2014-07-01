@@ -1,0 +1,14 @@
+#serverhwtable { margin: 10px 0 10px 0; border: 1px solid #ccc; width: 100%; }
+#serverhwtable th { background-color: #333; color: #fff; font-weight: normal; }
+#serverhwtable tr td, #bwtable tr th { padding: 3px; }
+#serveriptable { margin: 10px 0 10px 0; border: 1px solid #ccc; width: 100%; }
+#serveriptable th { background-color: #333; color: #fff; font-weight: normal; }
+#serveriptable tr td, #bwtable tr th { padding: 3px; }
+#serveriptable input[type="text"] { width: 300px; }
+.serverfwtable { margin: 10px 0 10px 0; border: 1px solid #ccc; width: 100%; }
+.serverfwtable th { background-color: #333; color: #fff; font-weight: normal; }
+.serverfwtable tr td { padding: 3px; cursor: pointer; cursor: hand;  }
+.serverdeftable { margin: 10px 0 10px 0; border: 1px solid #ccc; width: 100%; }
+.serverdeftable th { background-color: #333; color: #fff; font-weight: normal; }
+.serverdeftable tr td { padding: 3px; }
+.fw_save {margin-bottom: 10px;}
