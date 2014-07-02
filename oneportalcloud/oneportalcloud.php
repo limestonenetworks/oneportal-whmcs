@@ -281,12 +281,13 @@ function oneportalcloud_ClientArea($params) {
 	if (substr(strtoupper($server_id), 0, 3) != 'LSN') $server_id = 'LSN-' . $server_id;
 	$server = $op->serverlist($server_id);
 	if (empty($server)) return false;
+	if ($server->status == 'provisioning') return 'This server is currently provisioning. See more details here when it is finished.';
+	if ($server->status == 'cancelled') return 'This server has been cancelled';
 	$status = $op->getStatus($server_id);
 	$hardware = $op->gethardware($server_id);
 	$fw_rules = $op->getFireWallRules($server_id);
 	$ips = oneportalcloud_ipaddresses($params);
-	if ($server->status == 'provisioning') return 'This server is currently provisioning. See more details here when it is finished.';
-	if ($server->status == 'cancelled') return 'This server has been cancelled';
+
 	return array(
 		'templatefile' => 'clientarea',
 		'vars' => array(
@@ -300,12 +301,6 @@ function oneportalcloud_ClientArea($params) {
 	);
 
 }
-
-function oneportalcloud_AdminLink($params) {
-	$code = '';
-	return $code;
-}
-
 function oneportalcloud_AdminCustomButtonArray() {
 	# This function can define additional functions your module supports, the example here is a reboot button and then the reboot function is defined below
     $buttonarray = array(
