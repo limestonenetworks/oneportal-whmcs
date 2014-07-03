@@ -45,15 +45,17 @@ We recommend every 5 minutes. If you use this feature, be sure to put your API k
 
 For every hosting product/service while you set them up:
 
-1.  Go to the "Module Settings" tab
-2.  Select "Oneportalcloud" as the "Module Name"
-3.  Input your Oneportal user and password. This user must have the correct privileges set from within Oneportal.
-4.  Check any options you'd like
-5.  The options for Ram/Storage/OS/Cores serve as the default for any cloud server you provision.
+1.  Create a new Oneportal user to be used with the API. USERNAME-api or something similar.
+2.  Give your new user the privileges you desire. It will need most of them in order for this module to function properly. For a quick start just check all.
+3.  Open WHMCS and go to the "Module Settings" tab
+4.  Select "Oneportalcloud" as the "Module Name"
+5.  Input your Oneportal api user and password. This user must have the correct privileges set from within Oneportal.
+6.  Check any options you'd like
+7.  The options for Ram/Storage/OS/Cores serve as the default for any cloud server you provision.
 This gives you the ability to either create multiple products with a set configuration or you can create configurable options for these fields.
 Scalability will not be possible without configurable options being setup.
-5.  Change the "rDNS Domain" to your domain name
-6.  When the product is activated it will create the server and set the Server ID (explained below) for you.
+8.  Change the "rDNS Domain" to your domain name
+9.  When the product is activated it will create the server and set the Server ID (explained below) for you.
 
 Then, go to the "Custom Fields" and add a field with the following:
 
@@ -72,11 +74,12 @@ If you wish to have scalable cloud servers and/or give your users the ability to
 3. Click the edit group button
 4. Click add new configurable option
 5. From this screen you can add the options that you wish
-6. The option names are case sensitive and must be one of the following: Ram, Storage, Cores, OS
-7. Choose type of dropdown and add an entry for each option you want to be available. The accepted options for each type are listed below.
-8. The input is expected to be one from this list. If it is not then it will result in the server being unable to provision.
+6. The option names are case sensitive and must be one of the following: Ram, Storage, Cores, OS, IPs
+7. The option name that is visible on the order form can be customized by using the | character. Example: IPs|IP Addresses
+8. Choose type of dropdown and add an entry for each option you want to be available. The accepted options for each type are listed below.
+9. The input is expected to be one from this list. If it is not then it will result in the server being unable to provision.
 
-Option paramaters
+Option parameters
 > Ram => 512MB,1GB,2GB,4GB,8GB,16GB,32GB
 
 > Storage => 5GB,10GB,15GB,20GB,50GB,100GB,120GB,140GB,160GB,180GB,200GB
@@ -85,3 +88,4 @@ Option paramaters
 
 > OS => CentOS 5.9 x64,CentOS 6.4 x64,Debian 7.0 x64,Fedora 18 x64,Gentoo 12.1 x64,Red Hat Enterprise Linux 5.9 x64,Red Hat Enterprise Linux 6.4 x64,Ubuntu 13.04 x64,Ubuntu 12.10 x64,Arch Linux 2012.12 x64,CloudLinux Server 6.4 x64,Fedora 19 x64,openSUSE 12.1 x86,PBXware 3.1 x86,Scientific Linux 6.2 x64,Slackware 13.37 x64,Windows 2012 Standard Edition R2 - 64 bit
 
+> IPs => 1 IP, 2 IPs, 3 IPs, 4 IPs, 5 IPs

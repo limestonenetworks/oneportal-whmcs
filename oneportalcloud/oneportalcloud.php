@@ -14,23 +14,24 @@ function check_setup($params){
 	list($dedicatedip,$assignedips) = mysql_fetch_array($res);
 	$ips = false;
 	$values = array();
+	$ips = oneportalcloud_ipaddresses($params);
 	if(is_null($dedicatedip) || strlen($dedicatedip) === 0){
-		$ips = oneportalcloud_ipaddresses($params);
 		if(count($ips)){
 			$ip_entry = current($ips['public']);
 			$values['dedicatedip'] = $ip_entry['ipaddress'];
 		}
 
 	}
-	if(is_null($assignedips) || strlen($assignedips) === 0){
-		if(!$ips){
-			$ips = oneportalcloud_ipaddresses($params);
-		}
+	$ip_count = 0;
+	foreach($ips as $net){
+		$ip_count += count($net);
+	}
+	if(is_null($assignedips) || strlen($assignedips) === 0 || substr_count($assignedips,"\n") != count($ip_count)){
 		if(count($ips)){
 			$ip_list = '';
 			foreach($ips as $net_type){
 				foreach($net_type as $ip){
-					$ip_list .= $ip['ipaddress'] . ' ';
+					$ip_list .= $ip['ipaddress'] . "\n";
 				}
 			}
 			$values['assignedips'] = trim($ip_list);
@@ -196,14 +197,16 @@ function oneportalcloud_CreateAccount($params) {
 	$storage_name = isset($params['configoptions']['Storage'])?$params['configoptions']['Storage']:$params['configoption10'];
 	$os_name = isset($params['configoptions']['OS'])?$params['configoptions']['OS']:$params['configoption12'];
 	$cpus_name = isset($params['configoptions']['Cores'])?$params['configoptions']['Cores']:$params['configoption11'];
+	$ips_name = isset($params['configoptions']['IPs'])?$params['configoptions']['IPs']:"1 IP";
 	$password = $params['password'];
 	$hostname = $params['domain'];
 	//Get options from web service
 	$storage = $op->findOption($storage_name,3,$core);
 	$ram = $op->findOption($ram_name,1,$core);
 	$os = $op->findOption($os_name,8,$core);
+	$ip = $op->findOption($ips_name,11,$core);
 	//build post object to send server create function
-	$post = array('1'=>$ram->id,'3'=>$storage->id,'33'=>$cpus_name,'core'=>$core,'8'=>$os->id,'password'=>$password,'hostname'=>$hostname);
+	$post = array('1'=>$ram->id,'3'=>$storage->id,'33'=>$cpus_name,'core'=>$core,'8'=>$os->id,'11'=>$ip->id,'password'=>$password,'hostname'=>$hostname);
 	$server = $op->createServer($post);
 	if(isset($server->error)){
 		return $server->error;
@@ -705,14 +708,16 @@ function oneportalcloud_AdminServicesTabFieldsSave($params) {
 	$storage_name = isset($params['configoptions']['Storage'])?$params['configoptions']['Storage']:$params['configoption10'];
 	$os_name = isset($params['configoptions']['OS'])?$params['configoptions']['OS']:$params['configoption12'];
 	$cpus_name = isset($params['configoptions']['Cores'])?$params['configoptions']['Cores']:$params['configoption11'];
+	$ips_name = isset($params['configoptions']['IPs'])?$params['configoptions']['IPs']:"1 IP";
 	$password = $params['password'];
 	$hostname = $params['domain'];
 	//Get options from web service
 	$storage = $op->findOption($storage_name,3,$core);
 	$ram = $op->findOption($ram_name,1,$core);
 	$os = $op->findOption($os_name,8,$core);
+	$ip = $op->findOption($ips_name,11,$core);
 	//build post object to send server upgrade function
-	$post = array('1'=>$ram->id,'3'=>$storage->id,'33'=>$cpus_name,'core'=>$core,'8'=>$os->id,'password'=>$password,'hostname'=>$hostname);
+	$post = array('1'=>$ram->id,'3'=>$storage->id,'33'=>$cpus_name,'core'=>$core,'8'=>$os->id,'11'=>$ip->id,'password'=>$password,'hostname'=>$hostname);
 	$ret = $op->upgradeServer($server_id,$post);
 	if(!$ret->error){
 		$res = 'success';

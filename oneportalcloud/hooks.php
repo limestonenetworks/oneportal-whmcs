@@ -2,7 +2,7 @@
 require_once('oneportalcloud.api.php');
 function hook_oneportalcloud_ChangePackage($upgradeid) {
 
-	$upgradeFields = array('Ram'=>1,'Storage'=>3,'Cores'=>33,'OS'=>8);
+	$upgradeFields = array('Ram'=>1,'Storage'=>3,'Cores'=>33,'OS'=>8,'IPs'=>11);
 	$table = 'tblupgrades as tu left join tblhosting as th on tu.relid = th.id left join tblproducts as tp on tp.id = th.packageid left join tblcustomfields as tcf on tcf.relid = tp.id left join tblcustomfieldsvalues as tcfv on tcf.id = tcfv.fieldid and tcfv.relid = tu.relid';
 	$fields = 'tcfv.value as server_id, tu.relid as service_id,tp.configoption1,tp.configoption2,tp.configoption3';
 	$where = "tu.id = '{$upgradeid['upgradeid']}' and tcf.fieldname = 'Server ID'";
@@ -28,7 +28,7 @@ function hook_oneportalcloud_ChangePackage($upgradeid) {
 
 	}
 	$op = new OnePortalCloud($params['configoption1'], $params['configoption2'],$params['configoption3']);
-	$core = 69;//$params['configoption13'] == 'Cloud' ? 69 : 73;
+	$core = 69;
 	$post = array();
 	foreach($upgradeFields as $up=>$cat){
 		if(isset($names[$up])){
