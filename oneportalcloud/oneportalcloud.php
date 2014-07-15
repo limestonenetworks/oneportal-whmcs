@@ -192,26 +192,15 @@ function oneportalcloud_CreateAccount($params) {
 		return "Server already created.";
 	}
 	$op = new OnePortalCloud($params['configoption1'], $params['configoption2'],$params['configoption3']);
-	$core = 69;//$params['configoption13'] == 'Cloud' ? 69 : 73;
-	$ram_name = isset($params['configoptions']['Ram'])?$params['configoptions']['Ram']:$params['configoption9'];
-	$storage_name = isset($params['configoptions']['Storage'])?$params['configoptions']['Storage']:$params['configoption10'];
-	$os_name = isset($params['configoptions']['OS'])?$params['configoptions']['OS']:$params['configoption12'];
-	$cpus_name = isset($params['configoptions']['Cores'])?$params['configoptions']['Cores']:$params['configoption11'];
-	$ips_name = isset($params['configoptions']['IPs'])?$params['configoptions']['IPs']:"1 IP";
-	$password = $params['password'];
-	$hostname = $params['domain'];
-	//Get options from web service
-	$storage = $op->findOption($storage_name,3,$core);
-	$ram = $op->findOption($ram_name,1,$core);
-	$os = $op->findOption($os_name,8,$core);
-	$ip = $op->findOption($ips_name,11,$core);
-	//build post object to send server create function
-	$post = array('1'=>$ram->id,'3'=>$storage->id,'33'=>$cpus_name,'core'=>$core,'8'=>$os->id,'11'=>$ip->id,'password'=>$password,'hostname'=>$hostname);
+	$post = createPostString($op,$params);
 	$server = $op->createServer($post);
 	if(isset($server->error)){
 		return $server->error;
 	}
-	$server_id = mysql_real_escape_string($server->server);
+	if(isset($server->server)){
+		$server->server_id = $server->server;
+	}
+	$server_id = mysql_real_escape_string($server->server_id);
 
 	$res = select_query('tblcustomfields','id',array('relid'=>$params['packageid'],'fieldname'=>'Server ID'));
 	list($field_id) = mysql_fetch_array($res);
@@ -501,9 +490,10 @@ function oneportalcloud_ipaddresses($params) {
 			'subnet' => (string)$ip->subnet,
 			'ptr' => (string)$ip->ptr
 		);
-		if (!empty($params['configoption6'])) {
-			if (strpos((string)$ip->ptr, 'lstn.net') !== false) {
-				$ip->ptr = str_replace('lstn.net', $params['configoption6'], $ip->ptr);
+		if (!empty($params['configoption7'])) {
+
+			if (strpos($ip->ptr, 'lstn.net') !== false && $params['configoption7'] != 'lstn.net') {
+				$ip->ptr = str_replace('lstn.net', $params['configoption7'], $ip->ptr);
 
 				// Update OnePortal with the correct rDNS
 				$op->dns_setreverse($ip->ipaddress, $ip->ptr);
@@ -703,21 +693,7 @@ function oneportalcloud_AdminServicesTabFieldsSave($params) {
 	$server_id = $params['customfields']['Server ID'];
 	if (empty($server_id)) return 'Unable to determine Server ID to suspend';
 	if (substr(strtoupper($server_id), 0, 3) != 'LSN') $server_id = 'LSN-' . $server_id;
-	$core = 69;
-	$ram_name = isset($params['configoptions']['Ram'])?$params['configoptions']['Ram']:$params['configoption9'];
-	$storage_name = isset($params['configoptions']['Storage'])?$params['configoptions']['Storage']:$params['configoption10'];
-	$os_name = isset($params['configoptions']['OS'])?$params['configoptions']['OS']:$params['configoption12'];
-	$cpus_name = isset($params['configoptions']['Cores'])?$params['configoptions']['Cores']:$params['configoption11'];
-	$ips_name = isset($params['configoptions']['IPs'])?$params['configoptions']['IPs']:"1 IP";
-	$password = $params['password'];
-	$hostname = $params['domain'];
-	//Get options from web service
-	$storage = $op->findOption($storage_name,3,$core);
-	$ram = $op->findOption($ram_name,1,$core);
-	$os = $op->findOption($os_name,8,$core);
-	$ip = $op->findOption($ips_name,11,$core);
-	//build post object to send server upgrade function
-	$post = array('1'=>$ram->id,'3'=>$storage->id,'33'=>$cpus_name,'core'=>$core,'8'=>$os->id,'11'=>$ip->id,'password'=>$password,'hostname'=>$hostname);
+	$post = createPostString($op,$params);
 	$ret = $op->upgradeServer($server_id,$post);
 	if(!$ret->error){
 		$res = 'success';
@@ -726,6 +702,25 @@ function oneportalcloud_AdminServicesTabFieldsSave($params) {
 		$res = $ret->error;
 	}
 	return $res;
+}
+function createPostString($op,$params){
+	$core = 69;
+	$ram_name = isset($params['configoptions']['Ram'])?$params['configoptions']['Ram']:$params['configoption9'];
+	$storage_name = isset($params['configoptions']['Storage'])?$params['configoptions']['Storage']:$params['configoption10'];
+	$os_name = isset($params['configoptions']['OS'])?$params['configoptions']['OS']:$params['configoption12'];
+	$cpus_name = isset($params['configoptions']['Cores'])?$params['configoptions']['Cores']:$params['configoption11'];
+	$ips_name = isset($params['configoptions']['IPs'])?$params['configoptions']['IPs']:"1 IP";
+	$cp_name = isset($params['configoptions']['Control Panel'])?$params['configoptions']['Control Panel']:'cPanel';
+	$password = $params['password'];
+	$hostname = $params['domain'];
+	//Get options from web service
+	$storage = $op->findOption($storage_name,3,$core);
+	$ram = $op->findOption($ram_name,1,$core);
+	$os = $op->findOption($os_name,8,$core);
+	$ip = $op->findOption($ips_name,11,$core);
+	$cp = $op->findOption($cp_name,9,$core);
+	//build post object
+	return array('1'=>$ram->id,'3'=>$storage->id,'33'=>$cpus_name,'core'=>$core,'8'=>$os->id,'9'=>$cp->id,'11'=>$ip->id,'password'=>$password,'hostname'=>$hostname);
 }
 function validateFireWallRule($rule){
 	$errors = array();
