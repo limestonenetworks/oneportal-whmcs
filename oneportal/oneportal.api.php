@@ -177,8 +177,9 @@ class OnePortal {
 		curl_setopt($apisess, CURLOPT_FOLLOWLOCATION, 0);
 		curl_setopt($apisess, CURLOPT_VERBOSE, 0);
 		curl_setopt($apisess, CURLOPT_HTTP_VERSION, '1.0');
-
+		
 		/* SSL Options */
+		curl_setopt($apisess, CURLOPT_SSLVERSION, 1);
 		curl_setopt($apisess, CURLOPT_SSL_VERIFYPEER, 1);
 		curl_setopt($apisess, CURLOPT_SSL_VERIFYHOST, 1);
 
