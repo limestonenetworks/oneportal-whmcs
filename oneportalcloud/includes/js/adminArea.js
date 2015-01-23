@@ -28,6 +28,13 @@ $(document).ready(function(){
         e.preventDefault();
         $("#save_dialog").dialog('open');
     });
+    var changepw =  $('input[value="Change Password"]');
+    changepw.prop('onclick',null);
+    changepw.attr('onclick',null);
+    changepw.on('click',function(e){
+        var pass = $('input[name="password"]').val();
+        runModuleCommand('changepw',pass);
+    });
 });
 function addRow(){
     jQuery("#sry").remove();

@@ -148,8 +148,11 @@ function oneportalcloud_ChangePassword($params){
 	$server_id = $params['customfields']['Server ID'];
 	if (empty($server_id)) return 'Unable to determine Server ID to suspend';
 	if (substr(strtoupper($server_id), 0, 3) != 'LSN') $server_id = 'LSN-' . $server_id;
-	$ret = $op->changePassword($server_id,$_POST['newpw']);
+	$ret = $op->changePassword($server_id,$_POST['ac']);
 	if(!$ret->error){
+		include ('../../../configuration.php'); # Path to WHMCS configuration file. If change password does not work then make sure this is correct
+		$where = array('id'=>$params['serviceid']);
+		update_query('tblhosting',array('password'=>encrypt($_POST['ac'],$cc_encryption_hash)),$where);
 		$res = 'success';
 	}
 	else{
@@ -711,7 +714,6 @@ function createPostString($op,$params){
 	$cpus_name = isset($params['configoptions']['Cores'])?$params['configoptions']['Cores']:$params['configoption11'];
 	$ips_name = isset($params['configoptions']['IPs'])?$params['configoptions']['IPs']:"1 IP";
 	$cp_name = isset($params['configoptions']['Control Panel'])?$params['configoptions']['Control Panel']:'cPanel';
-	$password = $params['password'];
 	$hostname = $params['domain'];
 	//Get options from web service
 	$storage = $op->findOption($storage_name,3,$core);
@@ -720,7 +722,7 @@ function createPostString($op,$params){
 	$ip = $op->findOption($ips_name,11,$core);
 	$cp = $op->findOption($cp_name,9,$core);
 	//build post object
-	return array('1'=>$ram->id,'3'=>$storage->id,'33'=>$cpus_name,'core'=>$core,'8'=>$os->id,'9'=>$cp->id,'11'=>$ip->id,'password'=>$password,'hostname'=>$hostname);
+	return array('1'=>$ram->id,'3'=>$storage->id,'33'=>$cpus_name,'core'=>$core,'8'=>$os->id,'9'=>$cp->id,'11'=>$ip->id,'hostname'=>$hostname);
 }
 function validateFireWallRule($rule){
 	$errors = array();
