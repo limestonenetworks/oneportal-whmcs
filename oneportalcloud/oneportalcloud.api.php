@@ -139,7 +139,8 @@ class OnePortalCloud {
 		curl_setopt($apisess, CURLOPT_HTTP_VERSION, '1.0');
 		curl_setopt($apisess, CURLOPT_USERPWD, "{$this->user}:{$this->pass}");
 		/* SSL Options */
-		curl_setopt($apisess, CURLOPT_SSLVERSION, 1);
+		curl_setopt($apisess, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
+                curl_setopt($apisess, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
 		curl_setopt($apisess, CURLOPT_SSL_VERIFYPEER, 0);
 		curl_setopt($apisess, CURLOPT_SSL_VERIFYHOST, 0);
 		if($method == 'PUT' && $args !== false){
