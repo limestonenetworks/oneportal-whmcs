@@ -4,6 +4,8 @@ This WHMCS addon is provided without support. Limestone Networks' support depart
 
 # Installation
 
+TLS 1.2 support for curl is required.
+
 Dedicated servers: Move/Upload all of the files in the oneportal folder to modules/servers/oneportal
 Cloud servers: Move/Upload all of the files in the oneportalcloud folder to modules/servers/oneportalcloud
 
