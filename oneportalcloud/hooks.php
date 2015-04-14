@@ -44,3 +44,20 @@ function hook_oneportalcloud_ChangePackage($upgradeid) {
 }
 
 add_hook("AfterConfigOptionsUpgrade",1,'hook_oneportalcloud_ChangePackage');
+
+function hook_oneportalcloud_UnSuspend($params) {
+	$op = new OnePortalCloud($params['configoption1'], $params['configoption2'],$params['configoption3']);
+	$server_id = $params['customfields']['Server ID'];
+	if (empty($server_id)) return 'Unable to determine Server ID to suspend';
+	if (substr(strtoupper($server_id), 0, 3) != 'LSN') $server_id = 'LSN-' . $server_id;
+	$suspend = $op->unsuspend($server_id);
+	if (empty($suspend->error)) {
+		$result = "success";
+	} else {
+		$result = $suspend->error;
+	}
+	return $result;
+}
+
+add_hook("AfterModuleUnsuspend",1,'hook_oneportalcloud_UnSuspend');
+

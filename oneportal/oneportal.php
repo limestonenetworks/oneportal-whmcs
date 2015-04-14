@@ -145,125 +145,85 @@ function oneportal_UnsuspendAccount($params) {
 }
 
 function oneportal_ClientArea($params) {
-	$op = new OnePortal($params['configoption1'], $params['configoption2']);
+        $op = new OnePortal($params['configoption1'], $params['configoption2']);
 
-	$code = '
-<style>
-	#actionbuttons { padding-bottom: 10px; }
-	#actionbuttons form { display: inline; }
-	#serverhwtable, #bwtable { margin-top: 10px; }
-	#serverhwtable tr th, #bwtable tr th { background-color: #333; color: #fff; }
-</style>
-';
+        $server_id = $params['customfields']['Server ID'];
+        if (empty($server_id)) return 'Unable to determine Server ID';
+        if (substr(strtoupper($server_id), 0, 3) != 'LSN') $server_id = 'LSN-' . $server_id;
 
-	$server_id = $params['customfields']['Server ID'];
-	if (empty($server_id)) return 'Unable to determine Server ID';
-	if (substr(strtoupper($server_id), 0, 3) != 'LSN') $server_id = 'LSN-' . $server_id;
+        $server = $op->serverlist($server_id);
+        if (empty($server)) return false;
+        $server = $server->server;
 
-	$server = $op->serverlist($server_id);
-	if (empty($server)) return false;
-	$server = $server->server;
+        if ($server->status == 'provisioning') return 'This server is currently provisioning. See more details here when it is finished.';
+        if ($server->status == 'cancelled') return 'This server has been cancelled';
 
-	if ($server->status == 'provisioning') return 'This server is currently provisioning. See more details here when it is finished.';
-	if ($server->status == 'cancelled') return 'This server has been cancelled';
+        if ($params['configoption3'] == 'on') {
+                // Get bandwidth graph
+                $bwgraph = $op->bwgraph($server_id);
+                if ($bwgraph->error) $bwgraph = '';
 
-	if ($params['configoption5'] == 'on') {
-		#Display power controls
-		if ($server->powerstatus == 'on') {
-			$code .= '
-<div id="actionbuttons">
-	<p>Power currently on.</p>
-	<form method="post" action="clientarea.php?action=productdetails">
-		<input type="hidden" name="id" value="'.$params['serviceid'].'" />
-		<input type="hidden" name="modop" value="custom" />
-		<input type="hidden" name="a" value="reboot" />
-		<input type="submit" value="Reboot Server" />
-	</form>
-
-	<form method="post" action="clientarea.php?action=productdetails">
-		<input type="hidden" name="id" value="'.$params['serviceid'].'" />
-		<input type="hidden" name="modop" value="custom" />
-		<input type="hidden" name="a" value="turnoff" />
-		<input type="submit" value="Turn Off Server" />
-	</form>
-</div>
-		';
-		}else{
-			$code .= '
-<div id="actionbuttons">
-	<p>Power currently off.</p>
-	<form method="post" action="clientarea.php?action=productdetails">
-		<input type="hidden" name="id" value="'.$params['serviceid'].'" />
-		<input type="hidden" name="modop" value="custom" />
-		<input type="hidden" name="a" value="turnon" />
-		<input type="submit" value="Turn On Server" />
-	</form>
-</div>
-		';
-		}
-	}
-
-	if ($params['configoption3'] == 'on') {
-		// Get bandwidth graph
-		$bwgraph = $op->bwgraph($server_id);
-		if (empty($bwgraph->error)) $code .= $bwgraph;
-		$table = '<table id="bwtable"><tr><th>Bandwidth Usage</th><th>Percentage</th><th>Friendly</th><th>Bytes</th></tr>';
-		$table .= '<tr><td>Inbound</td><td colspan="3">Unmetered</td></tr>';
-		$table .= "<tr><td>Actual Outbound</td><td>{$server->bandwidth->actual->percentage}%</td><td>{$server->bandwidth->actual->friendly}</td><td>{$server->bandwidth->actual->bytes}</td></tr>";
-		$table .= "<tr><td>Predicted Outbound</td><td>{$server->bandwidth->predicted->percentage}%</td><td>{$server->bandwidth->predicted->friendly}</td><td>{$server->bandwidth->predicted->bytes}</td></tr>";
-		$table .= '</table>';
-		$code .= $table;
-	}
-
-	if ($params['configoption4'] == 'on') {
-		// Get hardware
-		$hardware = $op->gethardware($server_id);
-		if (empty($hardware->error)) {
-			$hwtable = '<table id="serverhwtable"><tr><th>Serial</th><th>Item</th></tr>';
-			foreach ($hardware->item as $item) {
-				$hwtable .= "<tr><td>{$item->serial}</td><td>{$item->description}</td></tr>";
-			}
-			$hwtable .= '</table>';
-			$code .= $hwtable;
-		}
-	}
+                $bandwidth = "
+                        <div class=\"row\">
+                                <div class=\"col-sm-6\">{$bwgraph}</div>
+                                <div class=\"col-sm-6\">
+                                        <h4>Bandwidth Usage</h4>
+                                        <table id=\"bwtable\" class=\"table table-striped\">
+                                                <tr><th>Direction</th><th colspan=\"2\">Usage</th><th>Bytes</th></tr>
+                                                <tr><td>Inbound</td><td colspan=\"3\">Unmetered</td></tr>
+                                                <tr><td>Actual Outbound</td><td>{$server->bandwidth->actual->percentage}%</td><td>{$server->bandwidth->actual->friendly}</td><td>{$server->bandwidth->actual->bytes}</td></tr>
+                                                <tr><td>Predicted Outbound</td><td>{$server->bandwidth->predicted->percentage}%</td><td>{$server->bandwidth->predicted->friendly}</td><td>{$server->bandwidth->predicted->bytes}</td></tr>
+                                        </table>
+                                </div>
+                        </div>
+                        <hr />
+                ";
+                $code .= $bandwidth;
+        }
+        if ($params['configoption4'] == 'on') {
+                // Get hardware
+                $hardware = $op->gethardware($server_id);
+                if (empty($hardware->error)) {
+                        $hwtable = '<h4>Hardware Details</h4><table id="serverhwtable" class="table table-striped"><tr><th>Serial</th><th>Item</th></tr>';
+                        foreach ($hardware->item as $item) {
+                                $hwtable .= "<tr><td>{$item->serial}</td><td>{$item->description}</td></tr>";
+                        }
+                        $hwtable .= '</table><hr />';
+                        $code .= $hwtable;
+                }
+        }
 
 
-	// Get IP addresses
-	if ($params['configoption7'] == 'on') {
-		$ips = oneportal_ipaddresses($params);
+        // Get IP addresses
+        if ($params['configoption7'] == 'on') {
+                $ips = oneportal_ipaddresses($params);
 
-		if (!empty($ips)) {
-			$iptable = '<form method="post" action="clientarea.php?action=productdetails">
-	<input type="hidden" name="id" value="'.$params['serviceid'].'" />
-	<input type="hidden" name="modop" value="custom" />
-	<input type="hidden" name="a" value="saverdns" />';
-			$iptable .= '<table id="serveriptable"><tr><th>Network</th><th>IP Address</th><th>IP Type</th><th>Reverse DNS</th></tr>';
-			foreach ($ips as $nettype => $network) {
-				$nettype = ucfirst($nettype);
-				foreach ($network as $ip) {
-					if ($nettype == 'Private' || $ip['type'] == 'network' || $ip['type'] == 'gateway' || $ip['type'] == 'broadcast') {
-						$iptable .= "<tr><td>{$nettype}</td><td>{$ip['ipaddress']}</td><td>{$ip['type']}</td><td>&nbsp;</td></tr>";
-					}else{
-						$iptable .= "<tr><td>{$nettype}</td><td>{$ip['ipaddress']}</td><td>{$ip['type']}</td><td><input type=\"text\" name=\"ipaddress[{$ip['ipaddress']}]\" value=\"{$ip['ptr']}\" /></td></tr>";
-					}
-				}
-			}
-			$iptable .= '</table>';
-			$iptable .= '<style>
-#serveriptable { margin: 10px 0 10px 0; border: 1px solid #ccc; width: 100%; }
-#serveriptable th { background-color: #333; color: #fff; font-weight: normal; }
-#serveriptable tr td, #bwtable tr th { padding: 3px; }
-</style>';
-			$code .= '<h3>IP Addressses</h3>'.$iptable;
-			$code .= '<input type="submit" value="Save Reverse DNS Changes" /></form>';
-		
-		}else{
-			$code .= '<h3>IP Addresses</h3><p>Unable to determine IP Addresses</p>';
-		}
-	}
+                if (!empty($ips)) {
+                        $iptable = '<form method="post" action="clientarea.php?action=productdetails">
+        <input type="hidden" name="id" value="'.$params['serviceid'].'" />
+        <input type="hidden" name="modop" value="custom" />
+        <input type="hidden" name="a" value="saverdns" />';
+                        $iptable .= '<table id="serveriptable" class="table table-striped"><tr><th>Network</th><th>IP Address</th><th>IP Type</th><th>Reverse DNS</th></tr>';
+                        foreach ($ips as $nettype => $network) {
+                                $nettype = ucfirst($nettype);
+                                foreach ($network as $ip) {
+                                        if ($nettype == 'Private' || $ip['type'] == 'network' || $ip['type'] == 'gateway' || $ip['type'] == 'broadcast') {
+                                                $iptable .= "<tr><td>{$nettype}</td><td>{$ip['ipaddress']}</td><td>{$ip['type']}</td><td>&nbsp;</td></tr>";
+                                        }else{
+                                                $iptable .= "<tr><td>{$nettype}</td><td>{$ip['ipaddress']}</td><td>{$ip['type']}</td><td><input type=\"text\" name=\"ipaddress[{$ip['ipaddress']}]\" value=\"{$ip['ptr']}\" class=\"form-control\" /></td></tr>";
+                                        }
+                                }
+                        }
+                        $iptable .= '</table>';
 
-	return $code;
+                        $code .= '<h4>IP Addressses</h4>'.$iptable;
+                        $code .= '<p class="text-center"><input type="submit" value="Save Reverse DNS Changes" class="btn-large btn-success" /></form></p>';
+                }else{
+                        $code .= '<h3>IP Addresses</h3><p>Unable to determine IP Addresses</p>';
+                }
+        }
+
+        return $code;
 }
 
 function oneportal_AdminLink($params) {
