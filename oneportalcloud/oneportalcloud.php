@@ -196,6 +196,7 @@ function oneportalcloud_CreateAccount($params) {
 	}
 	$op = new OnePortalCloud($params['configoption1'], $params['configoption2'],$params['configoption3']);
 	$post = createPostString($op,$params);
+	$post['password'] = $params['password'];
 	$server = $op->createServer($post);
 	if(isset($server->error)){
 		return $server->error;
@@ -211,6 +212,9 @@ function oneportalcloud_CreateAccount($params) {
 	$values = array('value'=>$server_id);
 	$where = array('relid'=>$params['serviceid'],'fieldid'=>$field_id);
 	update_query('tblcustomfieldsvalues',$values,$where);
+	$values = array('username'=>'root');
+	$where = array('id'=>$params['serviceid']);
+	update_query('tblhosting',$values,$where);
 	$result = 'success';
 	return $result;
 }
