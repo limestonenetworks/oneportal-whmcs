@@ -143,7 +143,9 @@ function oneportalcloud_ConfigOptions() {
 }
 
 function oneportalcloud_ChangePassword($params){
-
+	if(!isset($_POST['ac'])){
+		return 'success';
+	}
 	$op = new OnePortalCloud($params['configoption1'], $params['configoption2'],$params['configoption3']);
 	$server_id = $params['customfields']['Server ID'];
 	if (empty($server_id)) return 'Unable to determine Server ID to suspend';

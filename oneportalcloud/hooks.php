@@ -59,5 +59,25 @@ function hook_oneportalcloud_UnSuspend($params) {
 	return $result;
 }
 
-add_hook("AfterModuleUnsuspend",1,'hook_oneportalcloud_UnSuspend');
+function hook_oneportalcloud_ChangePassword($params){
+	if(isset($_POST['ac'])){
+		return 'success';
+	}
+	$params = $params['params'];
+	$op = new OnePortalCloud($params['configoption1'], $params['configoption2'],$params['configoption3']);
+	$server_id = $params['customfields']['Server ID'];
+	if (empty($server_id)) return 'Unable to determine Server ID to suspend';
+	if (substr(strtoupper($server_id), 0, 3) != 'LSN') $server_id = 'LSN-' . $server_id;
 
+	$ret = $op->changePassword($server_id,$params['password']);
+
+	if(!$ret->error){
+		$res = 'success';
+	}
+	else{
+		$res = $ret->error;
+	}
+	return $res;
+}
+add_hook("AfterModuleUnsuspend",1,'hook_oneportalcloud_UnSuspend');
+add_hook("AfterModuleChangePassword",1,'hook_oneportalcloud_ChangePassword');
