@@ -4,12 +4,14 @@ function hook_oneportalcloud_ChangePackage($upgradeid) {
 
 	$upgradeFields = array('Ram'=>1,'Storage'=>3,'Cores'=>33,'OS'=>8,'IPs'=>11);
 	$table = 'tblupgrades as tu left join tblhosting as th on tu.relid = th.id left join tblproducts as tp on tp.id = th.packageid left join tblcustomfields as tcf on tcf.relid = tp.id left join tblcustomfieldsvalues as tcfv on tcf.id = tcfv.fieldid and tcfv.relid = tu.relid';
-	$fields = 'tcfv.value as server_id, tu.relid as service_id,tp.configoption1,tp.configoption2,tp.configoption3';
+	$fields = 'tcfv.value as server_id, tu.relid as service_id,tp.servertype,tp.configoption1,tp.configoption2,tp.configoption3';
 	$where = "tu.id = '{$upgradeid['upgradeid']}' and tcf.fieldname = 'Server ID'";
 	$query = "Select $fields from $table where $where";
 	$result = mysql_query($query);
 	$params = mysql_fetch_array($result);
-
+	if($params['servertype'] != 'oneportalcloud'){
+		return 'success';
+	}
 	$table = 'tblupgrades';
 	$fields = 'originalvalue,newvalue';
 	$where = "id = '{$upgradeid['upgradeid']}'";
@@ -45,25 +47,15 @@ function hook_oneportalcloud_ChangePackage($upgradeid) {
 
 add_hook("AfterConfigOptionsUpgrade",1,'hook_oneportalcloud_ChangePackage');
 
-function hook_oneportalcloud_UnSuspend($params) {
-	$op = new OnePortalCloud($params['configoption1'], $params['configoption2'],$params['configoption3']);
-	$server_id = $params['customfields']['Server ID'];
-	if (empty($server_id)) return 'Unable to determine Server ID to suspend';
-	if (substr(strtoupper($server_id), 0, 3) != 'LSN') $server_id = 'LSN-' . $server_id;
-	$suspend = $op->unsuspend($server_id);
-	if (empty($suspend->error)) {
-		$result = "success";
-	} else {
-		$result = $suspend->error;
-	}
-	return $result;
-}
 
 function hook_oneportalcloud_ChangePassword($params){
 	if(isset($_POST['ac'])){
 		return 'success';
 	}
 	$params = $params['params'];
+	if($params['moduletype'] != 'oneportalcloud'){
+		return 'success';
+	}
 	$op = new OnePortalCloud($params['configoption1'], $params['configoption2'],$params['configoption3']);
 	$server_id = $params['customfields']['Server ID'];
 	if (empty($server_id)) return 'Unable to determine Server ID to suspend';
@@ -79,5 +71,5 @@ function hook_oneportalcloud_ChangePassword($params){
 	}
 	return $res;
 }
-add_hook("AfterModuleUnsuspend",1,'hook_oneportalcloud_UnSuspend');
+
 add_hook("AfterModuleChangePassword",1,'hook_oneportalcloud_ChangePassword');
