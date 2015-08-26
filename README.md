@@ -88,7 +88,7 @@ Option parameters
 
 > Cores => 1,2,3,4,5,6,7,8,9,10,11,12
 
-> OS => CentOS 5.9 x64,CentOS 6.4 x64,Debian 7.0 x64,Fedora 18 x64,Gentoo 12.1 x64,Red Hat Enterprise Linux 5.9 x64,Red Hat Enterprise Linux 6.4 x64,Ubuntu 14.10 x64,Ubuntu 14.10 x64,Arch Linux 2012.12 x64,CloudLinux Server 6.4 x64,Fedora 19 x64,openSUSE 12.1 x86,PBXware 3.1 x86,Scientific Linux 6.2 x64,Slackware 13.37 x64,Windows 2012 Standard Edition R2 X64
+> OS => CentOS 5.9 x64,CentOS 6.4 x64,Debian 7.0 x64,Fedora 18 x64,Gentoo 12.1 x64,Red Hat Enterprise Linux 5.9 x64,Red Hat Enterprise Linux 6.4 x64,Ubuntu 14.10 x64,Arch Linux 2012.12 x64,CloudLinux Server 6.4 x64,Fedora 19 x64,openSUSE 12.1 x86,PBXware 3.1 x86,Scientific Linux 6.2 x64,Slackware 13.37 x64,Windows 2012 Standard Edition R2 X64
 
 > IPs => 1 IP, 2 IPs, 3 IPs, 4 IPs, 5 IPs
 
