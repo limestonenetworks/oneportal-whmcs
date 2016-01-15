@@ -518,13 +518,14 @@ function oneportalcloud_AdminServicesTabFields($params) {
 	check_setup($params);
 	$op = new OnePortalCloud($params['configoption1'], $params['configoption2'],$params['configoption3']);
 	$server_id = $params['customfields']['Server ID'];
+	$server_id_orig = $server_id;
 	if (empty($server_id)) return 'Unable to determine Server ID to suspend';
 	if (substr(strtoupper($server_id), 0, 3) != 'LSN') $server_id = 'LSN-' . $server_id;
 	$server = $op->serverlist($server_id);
 	if (empty($server)) return 'Server cancelled or not provisioned yet.';
 	//Get console
 	$consolearea = "<link rel=\"stylesheet\" href=\"../modules/servers/oneportalcloud/includes/css/adminArea.css\"/>
-	<a class='btn' href='{$params['configoption3']}/server/{$server_id}/console' target='_blank'>Open Server Console</a>";
+	<a class='btn' href='{$params['configoption3']}/server/{$server_id_orig}/console' target='_blank'>Open Server Console</a>";
 	// Get hardware
 	$hardware = $op->gethardware($server_id);
 	$status = $op->getStatus($server_id);

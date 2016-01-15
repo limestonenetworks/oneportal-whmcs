@@ -76,7 +76,7 @@
 {if $params.configoption13 eq 'on'}
 	<div style="margin-top: 20px;">
 		<h3>Console</h3>
-		<a class="btn btn-primary" href='{$params.configoption3}/server/{$server->server_id}/console' target='_blank'>Open Server Console</a>
+		<a class="btn btn-primary" href='{$params.configoption3}/server/{$server->server_id|replace:'LSN-':''}/console' target='_blank'>Open Server Console</a>
 	</div>
 {/if}
 
