@@ -157,7 +157,7 @@ function oneportal_ClientArea($params) {
 
         if ($server->status == 'provisioning') return 'This server is currently provisioning. See more details here when it is finished.';
         if ($server->status == 'cancelled') return 'This server has been cancelled';
-
+		$code = "";
         if ($params['configoption3'] == 'on') {
                 // Get bandwidth graph
                 $bwgraph = $op->bwgraph($server_id);
@@ -165,8 +165,8 @@ function oneportal_ClientArea($params) {
 
                 $bandwidth = "
                         <div class=\"row\">
-                                <div class=\"col-sm-6\">{$bwgraph}</div>
-                                <div class=\"col-sm-6\">
+                                <div class=\"col-sm-12\">{$bwgraph}</div>
+                                <div class=\"col-sm-12\">
                                         <h4>Bandwidth Usage</h4>
                                         <table id=\"bwtable\" class=\"table table-striped\">
                                                 <tr><th>Direction</th><th colspan=\"2\">Usage</th><th>Bytes</th></tr>
