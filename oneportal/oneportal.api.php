@@ -180,9 +180,9 @@ class OnePortal {
 		
 		/* SSL Options */
 		curl_setopt($apisess, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
-                curl_setopt($apisess, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
+                curl_setopt($apisess, CURLOPT_SSL_CIPHER_LIST, 'ecdhe_rsa_aes_128_cbc_sha_256');
 		curl_setopt($apisess, CURLOPT_SSL_VERIFYPEER, 1);
-		curl_setopt($apisess, CURLOPT_SSL_VERIFYHOST, 1);
+		curl_setopt($apisess, CURLOPT_SSL_VERIFYHOST, 2);
 
 		/* POST method options */
 		if ($method == 'POST') {
