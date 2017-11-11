@@ -1,4 +1,4 @@
-# WHMCS addon for OnePortal
+# WHMCS Addon Module for OnePortal Product Import
 
 This WHMCS addon is provided without support. Limestone Networks' support department does not provide any assistance with the installation or use of this addon.
 
@@ -6,10 +6,20 @@ This WHMCS addon is provided without support. Limestone Networks' support depart
 
 TLS 1.2 support for curl is required.
 
+Server Import Addon: Move/Upload all of the files in the opserverimport folder to modules/addons/opserverimport
 Dedicated servers: Move/Upload all of the files in the oneportal folder to modules/servers/oneportal
 Cloud servers: Move/Upload all of the files in the oneportalcloud folder to modules/servers/oneportalcloud
 
-# Dedicated Servers Setup
+# Server Import Addon Module Setup
+
+1.  In WHMCS Admin area, go to "Setup" -> "Addon Modules" from drop-down
+2.  Select "Activate" next to **OnePortal Server Import** module
+3.  On the same page, choose "Configure" to set module access
+4.  From the Addons Menu, choose OnePortal Server Import 
+5.  Follow the prompts on-screen to configure the Import
+6.  OnePortal API Key will be required at this time [Guide for OnePortal API](http://support.limestonenetworks.com/knowledge-base/api-usage-methods/ "Limestone Networks API Usage")
+
+# Dedicated Server Module Manual Setup
 
 For every hosting product/service while you set them up:
 
@@ -28,22 +38,15 @@ Then, go to the "Custom Fields" and add a field with the following:
 - (optionally) Click "Admin Only" if you don't want to show this information to the client
 - (optionally) Click "Show on invoice" if you want the Server ID on your clients' invoices
 
-Then, when you provision a new server for a client:
+### Required Steps to Connect New Servers
 
 1.  Modify the product through the client's "Products/Services" tab
 2.  Locate the "Server ID" field and put in the server's ID as either "D####" or "LSN-D####" where the # signs are the ID of your server in OnePortal
 3.  Click "Save Changes"
 4.  After the server is provisioned in the data center more information will be available in the "Bandwidth", "Hardware" and "IP Addresses" sections of the product
 
-## Bandwidth Statistics (optional, may not work due to WHMCS limitations)
 
-To update bandwidth usage, you should setup a cron job for the following:
-
-	php -q /full_path_to/whmcs/modules/servers/oneportal/usageupdate.cron.php
-
-We recommend every 5 minutes. If you use this feature, be sure to put your API key on line 4 of usageupdate.cron.php where you see "$oneportal_api_key ="
-
-# Cloud Servers Setup
+# Cloud Provisioning Server Module Setup
 
 For every hosting product/service while you set them up:
 
