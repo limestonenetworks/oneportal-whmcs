@@ -17,6 +17,19 @@ function opserverimport_config() {
     return $configarray;
 }
 
+function file_get_contents_curl($url) {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);       
+
+    $data = curl_exec($ch);
+    curl_close($ch);
+
+    return $data;
+}
+
 function opserverimport_activate() {
     return array("status" => "success", "description" => "opserverimport has been activated.");
 }
@@ -165,7 +178,7 @@ function opserverimport_output($vars) {
             if (!ini_get('safe_mode')) {
                 set_time_limit(0);
             }
-            $string = file_get_contents('https://one.limestonenetworks.com/webservices/rss/products.php');
+            $string = file_get_contents_curl('https://one.limestonenetworks.com/webservices/rss/products.php');
             $products = new SimpleXMLElement($string);
             $i = 0;
             $iarray = array();
