@@ -4,12 +4,12 @@
 <p>{$service_product_name}</p>
 <p>Main IP: {$service_dedicated_ip}<br /> Root pass: {$service_password}</p>
 <p>IP address allocation: <br /> {$service_assigned_ips}</p>
-<p>Server Name: {$service_server_hostname}</p>
+<p>Server Name: {$service_domain}</p>
 <p><strong>Custom DNS Server Addresses</strong><br /> =============================<br /> The custom DNS addresses you should set for your domain to use are: <br /> Primary DNS: {$service_ns1}<br /> Secondary DNS: {$service_ns2}</p>
 <p>You will have to login to your registrar and find the area where you can specify both of your custom name server addresses.</p>
 <p>After adding these custom nameservers to your domain registrar control panel, it will take 24 to 48 hours for your domain to delegate authority to your DNS server. Once this has taken effect, your DNS server has control over the DNS records for the domains which use your custom name server addresses.</p>
-<p><strong>SSH Access Information<br /></strong>=============================<br /> Main IP Address: {$service_dedicated_ip}<br /> Hostname: {$service_server_hostname}<br /> Root Password: {$service_password}</p>
-<p>You can access your server using a free simple SSH client program called Putty located at:<br /><a href="http://www.securitytools.net/mirrors/putty/">http://www.securitytools.net/mirrors/putty/</a></p>
+<p><strong>SSH Access Information<br /></strong>=============================<br /> Main IP Address: {$service_dedicated_ip}<br /> Hostname: {$service_domain}<br /> Root Password: {$service_password}</p>
+<p>You can access your server using a free simple SSH client program called Putty located at:<br /><a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html</a><a title="Download Putty" href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html" target="_blank"><br /></a></p>
 <p><strong>Support</strong><br /> =============================<br /> For any support needs, please open a ticket at {$whmcs_url}</p>
 <p>Please include any necessary information to provide you with faster service, such as root password, domain names, and a description of the problem / or assistance needed. This will speed up the support time by allowing our administrators to immediately begin diagnosing the problem.</p>
 <p>=============================</p>
