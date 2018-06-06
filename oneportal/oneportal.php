@@ -99,7 +99,7 @@ function oneportal_TerminateAccount($params) {
 			10,
 			"Please cancel {$server_id}",
 			'This server has been cancelled through our billing system and we are no longer being paid by our client for this server. Please cancel it.',
-			(int) $userlist->user[0]['id'],
+			(int) $userlist->row0->id,
 			$server = $server_id);
 
 	if (empty($newticket->error)) {
