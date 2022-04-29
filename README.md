@@ -17,7 +17,7 @@ Cloud servers: Move/Upload all of the files in the oneportalcloud folder to modu
 3.  On the same page, choose "Configure" to set module access
 4.  From the Addons Menu, choose OnePortal Server Import 
 5.  Follow the prompts on-screen to configure the Import
-6.  OnePortal API Key will be required at this time [Guide for OnePortal API](http://support.limestonenetworks.com/knowledge-base/api-usage-methods/ "Limestone Networks API Usage")
+6.  OnePortal API Key will be required at this time [Guide for OnePortal API](http://support.limestonenetworks.com/knowledge-base/api-usage-methods/ "Limestone Networks API Usage"). Keys are managed in [OnePortal API Manager](https://one.limestonenetworks.com/administrative/apilegacy.html)
 
 # Dedicated Server Module Manual Setup
 

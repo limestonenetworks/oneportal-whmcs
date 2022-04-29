@@ -265,7 +265,7 @@ function opserverimport_output($vars) {
                     'description' => $description,
                     'stockcontrol' => '0',
                     'servertype' => 'opserverimport',
-                    'autosetup' => 'Off',
+                    'autosetup' => '',
                     'name' => trim($product['name']),
                     'paytype' => 'recurring',
                 );
@@ -349,7 +349,6 @@ function opserverimport_output($vars) {
                 <div class="panel-body">
                     This utility can used to import OnePortal all product with configurations and price.
                     <br /> You should create a product group before you start to import products.
-                    <br /> Any note and help you can here with language file :)
                 </div>
                 <div class="panel-footer">
                     <form method="post" action="addonmodules.php?module=opserverimport">
