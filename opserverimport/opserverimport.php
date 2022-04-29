@@ -347,10 +347,13 @@ function opserverimport_output($vars) {
             <div class="panel panel-default">
                 <div class="panel-heading"><strong>STEP 1</strong></div>
                 <div class="panel-body">
-                    This utility can used to import OnePortal all product with configurations and price.
-                    <br /> You should create a product group before you start to import products.
+
+                    This utility creates products and configurable options based upon Dedicated Server products available from Limestone Networks.
+                    <br /> Configure the Client Area features and insert OnePortal API key on the next step.
+                    <br /> Before accessing the product import, create a product group (WHMCS Admin->Setup->Products/Services->Products/Services->Create Product Group).
+                    <br /> Group can be named "Dedicated Servers" or any other name.
+
                 </div>
-                <div class="panel-footer">
                     <form method="post" action="addonmodules.php?module=opserverimport">
                         <input type="hidden" name="step2" value="1">
                         <button type="submit" id="activate-step-2" class="btn btn-primary btn-lg">Continue</button>
